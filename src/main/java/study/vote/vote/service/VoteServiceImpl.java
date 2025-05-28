@@ -7,6 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import study.vote.member.repository.MemberRepository;
 import study.vote.vote.dto.req.CreateVoteReqDto;
 import study.vote.vote.dto.req.SubmitVoteReqDto;
+import study.vote.vote.dto.resp.OptionDto;
+import study.vote.vote.dto.resp.VoteContentRespDto;
+import study.vote.vote.dto.resp.VoteListRespDto;
 import study.vote.vote.entity.OptionList;
 import study.vote.vote.entity.Participant;
 import study.vote.vote.entity.Vote;
@@ -15,6 +18,7 @@ import study.vote.vote.repository.ParticipantRepository;
 import study.vote.vote.repository.VoteRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional
@@ -69,5 +73,26 @@ public class VoteServiceImpl implements VoteService{
                     );
                 }
         );
+    }
+
+    @Override
+    public List<VoteListRespDto> getVoteList() {
+        List<Vote> votes = voteRepository.findAllWithMember();
+        return votes.stream().map(VoteListRespDto::new).toList();
+    }
+
+    @Override
+    public VoteContentRespDto getVoteContent(Long voteId) {
+        List<OptionList> options = optionListRepository.findByVoteNo(voteId);
+        Vote vote = options.getFirst().getVote();
+
+        // 일단 익명 투표인 경우만.. 추후 구현 예정
+        return VoteContentRespDto.builder()
+                .title(vote.getTitle())
+                .content(vote.getContent())
+                .expiration(vote.getExpiration())
+                .options(options.stream().map(OptionDto::new).toList())
+                .createAt(vote.getCreatedAt())
+                .build();
     }
 }
