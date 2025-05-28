@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
-public class participant {
+public class Participant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long no;
@@ -31,7 +31,7 @@ public class participant {
     private LocalDateTime votedAt;
 
     @Builder
-    public participant(Long no, Member member, Vote vote, OptionList option, LocalDateTime votedAt) {
+    public Participant(Long no, Member member, Vote vote, OptionList option, LocalDateTime votedAt) {
         this.no = no;
         this.member = member;
         this.vote = vote;
