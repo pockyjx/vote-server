@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import study.vote.member.entity.Member;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -36,11 +37,11 @@ public class Vote {
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
-    private LocalDateTime expiration;
+    private LocalDate expiration;
 
     @Builder
     public Vote(Long no, String title, String content, Member member,
-                int maxChoice, boolean isOpen, LocalDateTime createdAt, LocalDateTime expiration) {
+                int maxChoice, boolean isOpen, LocalDateTime createdAt, LocalDate expiration) {
         this.no = no;
         this.title = title;
         this.content = content;
