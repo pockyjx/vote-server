@@ -16,6 +16,7 @@ import java.util.List;
 @RequestMapping(value = "/vote")
 @RequiredArgsConstructor
 @Slf4j
+@CrossOrigin("http://localhost:5173")
 public class VoteController {
     private final VoteService voteService;
 
@@ -42,4 +43,5 @@ public class VoteController {
     public void submitVote(@RequestBody SubmitVoteReqDto dto) {
         voteService.submitVote(dto);
     }
+
 }

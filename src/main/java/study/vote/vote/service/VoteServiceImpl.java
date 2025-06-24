@@ -62,17 +62,22 @@ public class VoteServiceImpl implements VoteService{
     @Override
     public void submitVote(SubmitVoteReqDto dto) {
 
-        dto.getOptions().forEach(
+        List<Long> options = dto.getOptions();
+
+        options.forEach(
                 no -> {
                     participantRepository.save(Participant.builder()
                             .vote(voteRepository.getReferenceById(dto.getVoteId()))
                             .option(optionListRepository.getReferenceById(no))
-//                            .member(memberRepository.getReferenceById(dto.getMemberId()))
+                            .member(memberRepository.getReferenceById(dto.getMemberId()))
                             .votedAt(LocalDateTime.now())
                             .build()
                     );
                 }
         );
+
+        optionListRepository.submitVote(options);
+
     }
 
     @Override
